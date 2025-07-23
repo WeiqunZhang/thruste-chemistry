@@ -89,15 +89,20 @@ void main_main ()
         for (int n = 0; n < NUM_SPECIES; ++n) {
             Xt[n] = small;
         }
-        Xt[H2_ID] = 0.10_rt;
+#ifdef CH4_ID
+        constexpr int ifuel = CH4_ID;
+#else
+        constexpr int ifuel = H2_ID;
+#endif
+        Xt[ifuel] = 0.10_rt;
         Xt[O2_ID] = 0.25_rt;
 
         auto expfac = std::exp(-Math::powi<2>(r/rfire));
         Pt += 0.1_rt*patm * expfac;
         Tt += 1100._rt * expfac;
-        Xt[H2_ID] +=  0.025_rt * expfac;
+        Xt[ifuel] +=  0.025_rt * expfac;
         Xt[O2_ID] += -0.050_rt * expfac;
-        Xt[N2_ID] = 1._rt - Xt[H2_ID] - Xt[O2_ID] - (NUM_SPECIES-3)*small;
+        Xt[N2_ID] = 1._rt - Xt[ifuel] - Xt[O2_ID] - (NUM_SPECIES-3)*small;
 
         Real Yt[NUM_SPECIES];
         CKXTY(Xt, Yt);
