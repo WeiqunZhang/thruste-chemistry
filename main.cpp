@@ -83,9 +83,11 @@ void main_main ()
         auto Pt = patm;
         auto Tt = 300._rt;
 
+        constexpr Real small = 1.e-8;
+
         Real Xt[NUM_SPECIES];
         for (int n = 0; n < NUM_SPECIES; ++n) {
-            Xt[n] = 1.e-10_rt;
+            Xt[n] = small;
         }
         Xt[H2_ID] = 0.10_rt;
         Xt[O2_ID] = 0.25_rt;
@@ -95,7 +97,7 @@ void main_main ()
         Tt += 1100._rt * expfac;
         Xt[H2_ID] +=  0.025_rt * expfac;
         Xt[O2_ID] += -0.050_rt * expfac;
-        Xt[N2_ID] = 1._rt - Xt[H2_ID] - Xt[O2_ID] - (NUM_SPECIES-3)*1.e-10_rt;
+        Xt[N2_ID] = 1._rt - Xt[H2_ID] - Xt[O2_ID] - (NUM_SPECIES-3)*small;
 
         Real Yt[NUM_SPECIES];
         CKXTY(Xt, Yt);
